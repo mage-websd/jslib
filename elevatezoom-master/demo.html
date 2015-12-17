@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'/>
+	<title>jQuery elevateZoom Demo</title>
+	<script src='jquery-1.8.3.min.js'></script>
+	<script src='jquery.elevatezoom.js'></script>
+</head>
+<body>
+<h1>Basic Zoom Example</h1>
+<img id="zoom_01" src='images/small/image1.png' data-zoom-image="images/large/image1.jpg"/>
+<div id="gallery_01">
+	<div class="bx-wrapper">
+		<div class="bx-viewport">
+			<ul>
+				<li>
+					<a href="#" data-image="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/small/image1.png" 
+						data-zoom-image="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/large/image1.jpg">
+						<img src="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/small/image1.png">
+					</a>
+				</li>
+				<li>
+					<a href="#" data-image="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/small/image3.png" 
+					data-zoom-image="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/large/image3.jpg">
+						<img src="http://www.elevateweb.co.uk/wp-content/themes/radial/zoom/images/small/image3.png">
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<br />
+see more examples online <a href="http://www.elevateweb.co.uk/image-zoom/examples">http://www.elevateweb.co.uk/image-zoom/examples</a>
+<script>
+    $('#zoom_01').elevateZoom({
+    zoomType: "inner",
+	cursor: "crosshair",
+	zoomWindowFadeIn: 500,
+	zoomWindowFadeOut: 750,
+	gallery:'gallery_01',
+	galleryActiveClass: 'active'
+   }); 
+   
+</script>
+</body>
+</html>

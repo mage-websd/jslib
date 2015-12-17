@@ -1,0 +1,283 @@
+<style>
+.collapse-content{
+	background-color: grey;
+}
+</style>
+
+<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+<div class="collapse-wrapper">
+	<div class="collapse-title">
+		<h1>title 1</h1>
+		 + class:<b class="collapse-class"></b>
+	</div>
+	<div class="collapse-content">
+		<h4>content 1</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+
+	<div class="collapse-title expand">
+		<h1>title 2</h1>
+		 + class:<b class="collapse-class"></b>
+	</div>
+	<div class="collapse-content">
+		<h4>content 2</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+
+	<div class="collapse-title">
+		<h1>title 3</h1>
+		 + class:<b class="collapse-class"></b>
+	</div>
+	<div class="collapse-content">
+		<h4>content 3</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+
+	<div class="collapse-title expand">
+		<h1>title 4</h1>
+		 + class:<b class="collapse-class"></b>
+	</div>
+	<div class="collapse-content">
+		<h4>content 4</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+</div>
+
+<!-- <div class="collapse-wrapper">
+	<div class="">
+		<h1 class="collapse-title">title 1 + class:<b class="collapse-class"></b></h1>
+		<span class="collapse-title change-text">More + class:<b class="collapse-class"></b></span>
+	</div>
+	<div class="collapse-content">
+		<h4>content 1</h4>
+		 + class:<b class="collapse-class"></b>
+		<div class="collapse-close">Close</div>
+	</div>
+
+	<div class="">
+		<h1 class="collapse-title expand">title 2 + class:<b class="collapse-class"></b></h1>
+		<span class="collapse-title change-text">More + class:<b class="collapse-class"></b></span>
+	</div>
+	<div class="collapse-content">
+		<h4>content 2</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+
+	<div class="">
+		<h1 class="collapse-title">title 3 + class:<b class="collapse-class"></b></h1>
+		<span class="collapse-title change-text">More + class:<b class="collapse-class"></b></span>
+	</div>
+	<div class="collapse-content">
+		<h4>content 3</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+
+	<div class="">
+		<h1 class="collapse-title expand">title 4 + class:<b class="collapse-class"></b></h1>
+		<span class="collapse-title change-text">More + class:<b class="collapse-class"></b></span>
+	</div>
+	<div class="collapse-content">
+		<h4>content 4</h4>
+		 + class:<b class="collapse-class"></b>
+		 <div class="collapse-close">Close</div>
+	</div>
+</div> -->
+
+<script type="text/javascript">
+(function($){
+	function assignDefault(name,value) {
+		if(name == undefined) {
+			return value;
+		}
+		return name;
+	}
+
+	$.fn.collapse = function(object) {
+		var thisWrapper = $(this),
+		thisSelector = thisWrapper.selector;
+		var flagTitle = '.collapse-title',
+		flagContent = '.collapse-content',
+		flagClassTitleExpand = 'expand',
+		flagClassContentExpand  = 'open',
+		flagClassChangeText='change-text',
+		flagClassClose ='collapse-close';
+
+		object = assignDefault(object,{});
+		object.start = assignDefault(object.start,true);
+		object.click = assignDefault(object.click,true);
+		object.next = assignDefault(object.next,true);
+		object.speed = assignDefault(object.speed,500);
+		object.only = assignDefault(object.only,true);
+		object.parent = assignDefault(object.parent,false);
+		if(!object.parent) {
+			object.sync = false;
+		}
+		else {
+			object.sync = assignDefault(object.sync,false);
+		}
+		object.changeText = assignDefault(object.changeText,false);
+		if(object.changeText) {
+			object.more = assignDefault(object.more,'more');
+			object.less = assignDefault(object.less,'less');
+		}
+		object.close = assignDefault(object.close,false);
+
+		if(object.start) {
+			$.each(thisWrapper.find(flagTitle), function() {
+				var domContent;
+	            var domTitle = $(this);
+	            var domTitleParent;
+	            if(object.parent) {
+	            	domTitleParent = $(this).parent();
+	            }
+	            if(object.next) {
+	            	if(object.parent) {
+		            	domContent = domTitleParent.next(flagContent);
+		            }
+		            else {
+		            	domContent = domTitle.next(flagContent);
+		            }
+	            }
+	            else {
+	            	if(object.parent) {
+		            	domContent = domTitleParent.prev(flagContent);
+		            }
+		            else {
+		            	domContent = domTitle.prev(flagContent);
+		            }
+	            }
+	            if(domTitle.hasClass(flagClassTitleExpand)) {
+	            	domContent.show();
+	            	domContent.addClass(flagClassContentExpand);
+	            }
+	            else {
+	            	domContent.hide();
+	            	domContent.removeClass(flagClassContentExpand);
+	            }
+	        });
+		}
+		if(object.click) {
+			function collapseOnly(domTitle,domContent,domTitleParent) {
+				domContent.siblings(flagContent).slideUp(object.speed);
+        		if(object.parent) {
+        			domTitleParent.siblings().children(flagTitle).removeClass(flagClassTitleExpand);
+        		}
+        		else {
+        			domTitle.siblings(flagTitle).removeClass(flagClassTitleExpand);
+        		}
+        		domContent.siblings(flagContent).removeClass(flagClassContentExpand);
+        		if(object.changeText) {
+                	domTitle.siblings('.'+flagClassChangeText).html(object.more);
+                	if(object.parent) {
+                		domTitleParent.siblings().children('.'+flagClassChangeText).html(object.more);
+                	}
+            	}
+			}
+
+			$(document).on('click',thisSelector+' '+flagTitle,function(event) {
+				event.preventDefault();
+	            var domContent;
+	            var domTitle = $(this);
+	            var domTitleParent;
+	            if(object.parent) {
+	            	domTitleParent = $(this).parent();
+	            }
+	            if(object.next) {
+	            	if(object.parent) {
+		            	domContent = domTitleParent.next(flagContent);
+		            }
+		            else {
+		            	domContent = domTitle.next(flagContent);
+		            }
+	            }
+	            else {
+	            	if(object.parent) {
+		            	domContent = domTitleParent.prev(flagContent);
+		            }
+		            else {
+		            	domContent = domTitle.prev(flagContent);
+		            }
+	            }
+	            if(domContent.length) {
+	                if(domTitle.hasClass(flagClassTitleExpand)) {
+	                	if(object.only) {
+	                		collapseOnly(domTitle,domContent,domTitleParent);
+	                	}
+                		domContent.slideUp(object.speed);
+                    	domTitle.removeClass(flagClassTitleExpand);
+                    	if(object.sync) {
+                    		domTitle.siblings().removeClass(flagClassTitleExpand);
+                    	}
+	                    domContent.removeClass(flagClassContentExpand);
+	                }
+	                else {
+	                	if(object.only) {
+	                		collapseOnly(domTitle,domContent,domTitleParent);
+	                	}
+	                	domContent.slideDown(object.speed);
+	                    domTitle.addClass(flagClassTitleExpand);
+	                    if(object.sync) {
+                    		domTitle.siblings().addClass(flagClassTitleExpand);
+                    	}
+	                    domContent.addClass(flagClassContentExpand);
+	                }
+	                if(object.changeText) {
+	                	if(domTitle.hasClass(flagClassTitleExpand)) {
+	                		if(domTitle.hasClass(flagClassChangeText)) {
+	                			domTitle.html(object.less);
+	                		}
+	                	}
+	                	else {
+	                		if(domTitle.hasClass(flagClassChangeText)) {
+	                			domTitle.html(object.more);
+	                		}
+	                	}
+	                	if(domTitle.siblings('.'+flagClassChangeText).hasClass(flagClassTitleExpand)) {
+	                		domTitle.siblings('.'+flagClassChangeText).html(object.less);
+	                	}
+	                	else {
+	                		domTitle.siblings('.'+flagClassChangeText).html(object.more);
+	                	}
+                	}
+	            }
+	        });
+			if(object.close) {
+				$(document).on('click','.'+flagClassClose,function(event) {
+					event.preventDefault();
+					if(object.parent) {
+						domTitleClose = $(this).parent().prev().children(flagTitle);
+					}
+					else {
+						domTitleClose = $(this).parent().prev(flagTitle);
+					}
+					domTitleClose.first().trigger('click');
+				})
+			}
+		}
+	};
+})(jQuery);
+$('.collapse-wrapper').collapse({
+	start: true,
+	click: true,
+	next: true,
+	speed: 500,
+	parent: false,
+	only: false,
+	sync: false, // parent = true
+	changeText: true, //.change-text
+	more: 'more',
+	less: 'less',
+	close: true,
+});
+setInterval(function(){
+	$('.collapse-class').each(function(){
+		$(this).html($(this).parent().attr('class'));
+	});
+},500);
+</script>

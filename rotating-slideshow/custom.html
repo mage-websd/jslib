@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="rotation.css" />
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="rotation.js"></script>
+    <style type="text/css">
+    .slide-item{
+        width: 500px;
+        height: 100px;
+        background-color: red;
+    }
+    </style>
+</head>
+<body>
+
+<div class="rotation-slider-container">
+    <ul class="rotation-slider">
+        <li class="rotation-item">
+            <div class="slide-item">
+                <h1>1</h1>
+            </div>
+        </li>
+        <li class="rotation-item active">
+            <div class="slide-item">
+                <h1>2</h1>
+            </div>
+        </li>
+        <li class="rotation-item">
+            <div class="slide-item">
+                <h1>3</h1>
+            </div>
+        </li>
+    </ul>
+    <div class="rotation-slider-controller">
+        <div class="controller-inner">
+            <a class="rotation-prev" href="#"><span>Prev</span></a>
+            <a class="rotation-next" href="#"><span>Next</span></a>
+        </div>
+    </div>
+    <div class="rotation-slider-pager"></div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('.rotation-slider').rotationSlider({
+            width: 500,
+            height: 100,
+            rotate: 360,
+            auto: 5000,
+            prev: '.rotation-prev', //default
+            next: '.rotation-next', //default
+            pager: true, //default
+            pagerDom: '.rotation-slider-pager'//default
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		/**
+ * Menu overview.
+ */
+.c-menu {
+  position: fixed;
+  z-index: 200;
+  background-color: #67b5d1;
+  transition: transform 0.3s;
+}
+
+.c-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Close button resets.
+ */
+.c-menu__close {
+  color: #fff;
+  background-color: #3184a1;
+  font-size: 14px;
+  border: none;
+  box-shadow: none;
+  border-radius: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+/**
+ * Close button resets.
+ */
+.c-menu__close:focus {
+  outline: none;
+}
+
+/**
+ * Body states.
+ *
+ * When a menu is active, we want to hide the overflows on the body to prevent
+ * awkward document scrolling.
+ */
+body.has-active-menu {
+  overflow: hidden;
+}
+
+/**
+ * Mask component
+ */
+
+.c-mask {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  background-color: #000;
+  opacity: 0;
+  transition: opacity 0.3s, width 0s 0.3s, height 0s 0.3s;
+}
+
+.c-mask.is-active {
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.c-menu--slide-left,
+.c-menu--slide-right,
+.c-menu--push-left,
+.c-menu--push-right {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+@media all and (min-width: 320px) {
+  .c-menu--slide-left,
+  .c-menu--slide-right,
+  .c-menu--push-left,
+  .c-menu--push-right {
+    width: 300px;
+  }
+}
+
+.c-menu--slide-left .c-menu__item,
+.c-menu--slide-right .c-menu__item,
+.c-menu--push-left .c-menu__item,
+.c-menu--push-right .c-menu__item {
+  display: block;
+  text-align: center;
+  border-top: solid 1px #b5dbe9;
+  border-bottom: solid 1px #3184a1;
+}
+
+.c-menu--slide-left .c-menu__item:first-child,
+.c-menu--slide-right .c-menu__item:first-child,
+.c-menu--push-left .c-menu__item:first-child,
+.c-menu--push-right .c-menu__item:first-child {
+  border-top: none;
+}
+
+.c-menu--slide-left .c-menu__item:last-child,
+.c-menu--slide-right .c-menu__item:last-child,
+.c-menu--push-left .c-menu__item:last-child,
+.c-menu--push-right .c-menu__item:last-child {
+  border-bottom: none;
+}
+
+.c-menu--slide-left .c-menu__link,
+.c-menu--slide-right .c-menu__link,
+.c-menu--push-left .c-menu__link,
+.c-menu--push-right .c-menu__link {
+  display: block;
+  padding: 12px 24px;
+  color: #fff;
+}
+
+.c-menu--slide-left .c-menu__close,
+.c-menu--slide-right .c-menu__close,
+.c-menu--push-left .c-menu__close,
+.c-menu--push-right .c-menu__close {
+  display: block;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+
+
+/* slide push left*/
+.c-menu--slide-left,
+.c-menu--push-left {
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+@media all and (min-width: 320px) {
+  .c-menu--slide-left,
+  .c-menu--push-left {
+    transform: translateX(-300px);
+  }
+}
+
+.c-menu--slide-left.is-active,
+.c-menu--push-left.is-active {
+  transform: translateX(0);
+}
+
+/*slide push right*/
+.c-menu--slide-right,
+.c-menu--push-right {
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+}
+
+@media all and (min-width: 320px) {
+  .c-menu--slide-right,
+  .c-menu--push-right {
+    transform: translateX(300px);
+  }
+}
+
+.c-menu--slide-right.is-active,
+.c-menu--push-right.is-active {
+  transform: translateX(0);
+}
+
+/*push left right*/
+	</style>
+</head>
+<body>
+<div id="o-wrapper" class="o-wrapper">
+	<div class="c-buttons">
+		<button id="c-button--slide-left" class="c-button">Slide Left</button>
+		<button id="c-button--slide-right" class="c-button">Slide Right</button>
+		<button id="c-button--push-left" class="c-button">Push Left</button>
+		<button id="c-button--push-right" class="c-button">Push Right</button>
+		<button id="c-button--slide-top" class="c-button">Slide Top</button>
+		<button id="c-button--slide-bottom" class="c-button">Slide Botton</button>
+		<button id="c-button--push-top" class="c-button">Push Top</button>
+		<button id="c-button--push-bottom" class="c-button">Push Bottom</button>
+	</div>
+  <!-- other content in here -->
+
+</div><!-- /o-wrapper -->
+
+<!-- menus here -->
+<nav id="c-menu--slide-left" class="c-menu c-menu--slide-left">
+  <button class="c-menu__close">&larr; Close Menu</button>
+  <ul class="c-menu__items">
+    <li class="c-menu__item"><a href="#" class="c-menu__link">Home</a></li>
+    <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
+    <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
+    <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
+    <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>
+  </ul>
+</nav><!-- /c-menu slide-left -->
+
+<nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
+  <!-- ... -->
+</nav><!-- /c-menu slide-right -->
+
+<nav id="c-menu--push-left" class="c-menu c-menu--push-left">
+  <!-- ... -->
+</nav><!-- /c-menu push-left -->
+
+<nav id="c-menu--push-right" class="c-menu c-menu--push-right">
+  <!-- ... -->
+</nav><!-- /c-menu push-right -->
+
+<nav id="c-menu--slide-top" class="c-menu c-menu--slide-top">
+  <!-- ... -->
+</nav><!-- /c-menu slide-top -->
+
+<nav id="c-menu--push-top" class="c-menu c-menu--push-top">
+  <!-- ... -->
+</nav><!-- /c-menu push-top -->
+
+<nav id="c-menu--slide-bottom" class="c-menu c-menu--slide-bottom">
+  <!-- ... -->
+</nav><!-- /c-menu slide-bottom -->
+
+<nav id="c-menu--push-bottom" class="c-menu c-menu--push-bottom">
+  <!-- ... -->
+</nav><!-- /c-menu push-bottom -->
+<div id="c-mask" class="c-mask"></div><!-- /c-mask -->
+
+<script type="text/javascript">
+	(function(window) {
+
+  'use strict';
+
+  /**
+   * Extend Object helper function.
+   */
+  function extend(a, b) {
+    for(var key in b) { 
+      if(b.hasOwnProperty(key)) {
+        a[key] = b[key];
+      }
+    }
+    return a;
+  }
+
+  /**
+   * Each helper function.
+   */
+  function each(collection, callback) {
+    for (var i = 0; i < collection.length; i++) {
+      var item = collection[i];
+      callback(item);
+    }
+  }
+
+  /**
+   * Menu Constructor.
+   */
+  function Menu(options) {
+    this.options = extend({}, this.options);
+    extend(this.options, options);
+    this._init();
+  }
+
+  /**
+   * Menu Options.
+   */
+  Menu.prototype.options = {
+    wrapper: '#o-wrapper',          // The content wrapper
+    type: 'slide-left',             // The menu type
+    menuOpenerClass: '.c-button',   // The menu opener class names (i.e. the buttons)
+    maskId: '#c-mask'               // The ID of the mask
+  };
+
+  /**
+   * Initialise Menu.
+   */
+  Menu.prototype._init = function() {
+    this.body = document.body;
+    this.wrapper = document.querySelector(this.options.wrapper);
+    this.mask = document.querySelector(this.options.maskId);
+    this.menu = document.querySelector('#c-menu--' + this.options.type);
+    this.closeBtn = this.menu.querySelector('.c-menu__close');
+    this.menuOpeners = document.querySelectorAll(this.options.menuOpenerClass);
+    this._initEvents();
+  };
+
+  /**
+   * Initialise Menu Events.
+   */
+  Menu.prototype._initEvents = function() {
+    // Event for clicks on the close button inside the menu.
+    this.closeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.close();
+    }.bind(this));
+
+    // Event for clicks on the mask.
+    this.mask.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.close();
+    }.bind(this));
+  };
+
+  /**
+   * Open Menu.
+   */
+  Menu.prototype.open = function() {
+    this.body.classList.add('has-active-menu');
+    this.wrapper.classList.add('has-' + this.options.type);
+    this.menu.classList.add('is-active');
+    this.mask.classList.add('is-active');
+    this.disableMenuOpeners();
+  };
+
+  /**
+   * Close Menu.
+   */
+  Menu.prototype.close = function() {
+    this.body.classList.remove('has-active-menu');
+    this.wrapper.classList.remove('has-' + this.options.type);
+    this.menu.classList.remove('is-active');
+    this.mask.classList.remove('is-active');
+    this.enableMenuOpeners();
+  };
+
+  /**
+   * Disable Menu Openers.
+   */
+  Menu.prototype.disableMenuOpeners = function() {
+    each(this.menuOpeners, function(item) {
+      item.disabled = true;
+    });
+  };
+
+  /**
+   * Enable Menu Openers.
+   */
+  Menu.prototype.enableMenuOpeners = function() {
+    each(this.menuOpeners, function(item) {
+      item.disabled = false;
+    });
+  };
+
+  /**
+   * Add to global namespace.
+   */
+  window.Menu = Menu;
+
+})(window);
+
+var slideLeft = new Menu({
+  wrapper: '#o-wrapper',
+  type: 'slide-left',
+  menuOpenerClass: '.c-button',
+  maskId: '#c-mask'
+});
+
+var slideLeftBtn = document.querySelector('#c-button--slide-left');
+
+slideLeftBtn.addEventListener('click', function(e) {
+  e.preventDefault;
+  slideLeft.open();
+});
+</script>
+</body>
+</html>

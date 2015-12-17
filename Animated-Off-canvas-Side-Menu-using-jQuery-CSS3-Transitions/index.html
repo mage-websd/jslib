@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animated Off-canvas Side Menu Demo</title>
+<style>
+#mmenu-left {
+  position: fixed;
+  background-color: #222;
+  height: 100%;
+  z-index: 10;
+  width: 280px;
+  color: #bbb;
+  top: 0;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 1;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+#mmenu-left ul {
+  list-style: none;
+  margin-top: 0;
+  padding: 0
+}
+#mmenu-left ul li { border-bottom: 1px solid #2a2a2a; }
+#mmenu-left>ul>li>a { border-left: 4px solid #222; }
+#mmenu-left ul li a {
+  color: inherit;
+  font-size: 16px;
+  display: inline-block;
+  padding: 8px 0 8px 7px;
+  text-decoration: none;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+#mmenu-left ul a i {
+  margin-right: 10px;
+  font-size: 18px;
+  margin-top: 3px;
+  width: 20px;
+}
+#mmenu-left ul a i[class*='fa-caret'] { float: right; }
+#mmenu-left ul a:hover,
+#mmenu-left ul li.active {
+  background-color: #111;
+  border-left-color: #FFCC33;
+  color: #FFCC33;
+}
+#mmenu-left ul a:hover i:first-child { color: #FFCC33; }
+/* Submenu */
+#mmenu-left ul li.active+ul { display: block }
+#mmenu-left ul li ul {
+  margin-top: 0;
+  display: none;
+}
+#mmenu-left ul li ul li { border-bottom: none; }
+#mmenu-left ul li ul li a { padding-left: 30px; }
+#mmenu-left ul li ul li a:hover { background-color: #1A1A1A; }
+/* /Submenu */
+/* Cuando este a la Izq, para esconderlo posicionarlo a la Izq a -width */
+.left { left: -280px; }
+.show { left: 0; }
+
+</style>
+</head>
+
+<body>
+<!-- menu vertical -->
+<nav id="mmenu-left" class="left">
+  <div class="mmenu-close mmenu-toggle">
+    <a href="#">Close</a>
+  </div>
+  <ul>
+    <li class="active">
+      <a href="#">Home</a>
+    </li>
+    <li><a href="#">About</a></li>
+    <li> 
+      <a href="#">Services</a>
+      <ul>
+        <li><a href="#">Service</a></li>
+        <li><a href="#">Service</a></li>
+        <li><a href="#">Service</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+<a href="#" class="menu-show mmenu-toggle" style="margin-left: 400px;">Menu</a> 
+
+<!-- /contenido de pagina, realmente no importa --> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script>
+jQuery(document).ready(function($) {
+  var domOpenChild = '<span class="collapse-title menu-open-child">Open</span>';
+  $("#mmenu-left").find('li:has(ul)',this).each(function() {
+    $(this).children('ul').before(domOpenChild);
+    $(this).children('ul').addClass('collapse-content');
+    $(this).addClass('has-child');
+  })
+  $(document).on('click',".mmenu-toggle",function(e){
+      $("#mmenu-left").toggleClass("show");
+      e.preventDefault();
+  });
+  $(document).mouseup(function (e){
+      var container = $("#mmenu-left");
+      var mMenuToggle = $('.mmenu-toggle');
+      if (mMenuToggle.is(e.target)
+          || mMenuToggle.has(e.target).length !== 0
+        ){
+        return false;
+      }
+      else if (!container.is(e.target)
+          && container.has(e.target).length === 0
+        ){
+          container.removeClass('show');
+      }
+  });
+  $(document).keyup(function(e) {
+    if (e.keyCode == 27) {
+        $("#mmenu-left").removeClass('show');
+    }
+  });
+});
+jQuery(document).ready(function($) {
+    function collapseClickActivity(dom) {
+      if(dom.hasClass('prev')) {
+        if(dom.prev('.collapse-content').length) {
+            if(dom.hasClass('expand')) {
+                dom.removeClass('expand');
+                dom.prev('.collapse-content').slideUp();
+                dom.prev('.collapse-content').removeClass('open');
+            }
+            else {
+                dom.addClass('expand');
+                dom.prev('.collapse-content').slideDown();
+                dom.prev('.collapse-content').addClass('open');
+            }
+        }
+      }
+      else {
+        if(dom.next('.collapse-content').length) {
+            if(dom.hasClass('expand')) {
+                dom.removeClass('expand');
+                dom.next('.collapse-content').slideUp();
+                dom.next('.collapse-content').removeClass('open');
+            }
+            else {
+                dom.addClass('expand');
+                dom.next('.collapse-content').slideDown();
+                dom.next('.collapse-content').addClass('open');
+            }
+        }
+      }
+    }
+    function collapseStartActivity(dom) {
+        $.each(dom, function(i,k) {
+          if($(this).hasClass('prev')) {
+            if($(this).prev('.collapse-content').length) {
+                if($(this).hasClass('expand')) {
+                    $(this).prev('.collapse-content').slideDown();
+                    $(this).prev('.collapse-content').addClass('open');
+                }
+                else {
+                    $(this).prev('.collapse-content').slideUp();
+                    $(this).prev('.collapse-content').removeClass('open');
+                }
+            }
+          }
+          else {
+            if($(this).next('.collapse-content').length) {
+                if($(this).hasClass('expand')) {
+                    $(this).next('.collapse-content').slideDown();
+                    $(this).next('.collapse-content').addClass('open');
+                }
+                else {
+                    $(this).next('.collapse-content').slideUp();
+                    $(this).next('.collapse-content').removeClass('open');
+                }
+            }
+          }
+        });
+    }
+    collapseStartActivity($('.collapse-title'));
+    $(document).on('click','.collapse-title',function() {
+        collapseClickActivity($(this));
+    });
+});
+</script>
+
+</body>
+</html>

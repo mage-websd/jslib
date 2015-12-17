@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>jquery.responsive-nav</title>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.responsive-nav.js"></script>
+	<link rel="stylesheet" type="text/css" href="jquery.responsive-nav.css" />
+	<script type="text/javascript">
+	jQuery( function( $ ) {
+		$( '#global-nav' ).responsive_nav();
+	} );
+	</script>
+</head>
+<body>
+<div id="responsive-nav-wrapper">
+
+<div id="responsive-btn"></div>
+<section>
+	<div id="global-nav">
+		<ul>
+			<li><a href="">ホーム</a></li>
+			<li>
+				<a href="">会社案内</a>
+				<ul>
+					<li><a href="">組織図</a></li>
+					<li>
+						<a href="">部署案内</a>
+						<ul>
+							<li><a href="">営業部</a></li>
+							<li><a href="">経理部</a></li>
+							<li><a href="">システム開発部</a></li>
+							<li><a href="">サポート</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li><a href="">よくあるご質問</a></li>
+			<li><a href="">お問い合わせ</a></li>
+		</ul>
+	<!-- end #global-nav" --></div>
+</section>
+
+
+</div>
+</body>
+</html>
